@@ -87,8 +87,8 @@ namespace SET_Breakout
                 // Create a new SpriteBatch, which can be used to draw textures.
                 _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-         //  Font1 = Content.Load<SpriteFont>("SpriteFont1");
-       // FontPos = new Vector2(100,100);
+           Font1 = Content.Load<SpriteFont>("Arial");
+        FontPos = new Vector2(10,10);
         // TODO: use this.Content to load your game content here
        player1.Texture = Content.Load<Texture2D>("Paddle");
 
@@ -132,7 +132,7 @@ namespace SET_Breakout
         if (laser1.alive == false && laser2.alive == false)
         {
             laser1.Position = new Vector2(player1.Position.X, player1.Position.Y - laser1.Texture.Height);
-            laser2.Position = new Vector2(player1.Position.X + player1.Texture.Height - laser2.Texture.Width, player1.Position.Y - laser1.Texture.Height);
+            laser2.Position = new Vector2(player1.Position.X + (int)(player1.Texture.Height * player1.SizeMultiplier) - laser2.Texture.Width, player1.Position.Y - laser2.Texture.Height);
         }
 }
          
@@ -181,7 +181,7 @@ namespace SET_Breakout
             if (laser1.alive == false && laser2.alive == false)
             {
                 laser1.Position = new Vector2(player1.Position.X, player1.Position.Y - laser1.Texture.Height);
-                laser2.Position = new Vector2(player1.Position.X + player1.Texture.Height - laser2.Texture.Width, player1.Position.Y - laser2.Texture.Height);
+                laser2.Position = new Vector2(player1.Position.X + (int)(player1.Texture.Height * player1.SizeMultiplier) - laser2.Texture.Width, player1.Position.Y - laser2.Texture.Height);
             }
             
           //  player2.Move(player2Velocity);
@@ -222,6 +222,7 @@ namespace SET_Breakout
                         }
 
                         b.alive = false;
+                        player1.score += get_score(b);
                     }
 
                     if (laser1.alive == true)
@@ -230,6 +231,7 @@ namespace SET_Breakout
                         {
                             b.alive = false;
                             laser1.alive = false;
+                            player1.score += get_score(b);
                         }
                     }
                     if (laser2.alive == true)
@@ -238,6 +240,7 @@ namespace SET_Breakout
                         {
                             b.alive = false;
                             laser2.alive = false;
+                            player1.score += get_score(b);
                         }
                     }
                 }
@@ -297,11 +300,11 @@ namespace SET_Breakout
                 laser2.Draw(_spriteBatch);
             }
 
-          /*  _spriteBatch.DrawString(
+            _spriteBatch.DrawString(
             Font1,                          // SpriteFont
             "Score: " + player1.score.ToString(),  // Text
             FontPos,                      // Position
-            Color.White); */
+            Color.White); 
 
             _spriteBatch.End();
             base.Draw(gameTime);
@@ -347,10 +350,27 @@ namespace SET_Breakout
             {
                 return 1;
             }
+     
+        }
 
-
-
-            
+        public int get_score(Brick b)
+        {
+            switch (b.row)
+            {
+                case 0:
+                    return 5;
+                case 1:
+                    return 5;
+                case 2:
+                    return 3;
+                case 3:
+                    return 3;
+                case 4:
+                    return 1;
+                case 5:
+                    return 1;
+            }
+            return 0;
         }
 
 
