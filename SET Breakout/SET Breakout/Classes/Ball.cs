@@ -12,8 +12,12 @@ namespace SET_Breakout
         public Vector2 Velocity;
         public Random random;
         public bool HitTop { get; set; }
+        private bool hitMiddleRow = false;
+        private bool hitTopRow = false;
         public bool Triggered { get; set; }
+
         public bool alive = true;
+        private int collisions = 0;
 
         public Ball()
         {
@@ -55,7 +59,12 @@ namespace SET_Breakout
                 Velocity.Y = 0;
                 Velocity.X = 0;
                 alive = false;
-                
+            
+                HitTop = false;
+                hitTopRow = false;
+                hitMiddleRow = false;
+                collisions = 0;
+
             }
             if (Position.X < 0)
             {
@@ -68,6 +77,36 @@ namespace SET_Breakout
                 Velocity.X *= -1;
             }
         }
+
+        public void SpeedIncrease(int row)
+        {
+            if (row == 2 || row == 3)
+            {
+                if (!hitMiddleRow)
+                {
+                    Velocity *= (float)1.10;
+                    hitMiddleRow = true;
+                }
+            }
+            else if (row == 0 || row == 1)
+            {
+                if (!hitTopRow)
+                {
+                    Velocity *= (float)1.10;
+                    hitTopRow = true;
+                }
+            }
+        }
+
+        public void Collided()
+        {
+            collisions++;
+            if (collisions == 4 || collisions == 12)
+            {
+                Velocity *= (float)1.10;
+            }
+        }
+
          public override void Move(Vector2 amount)
          {
              base.Move(amount);
