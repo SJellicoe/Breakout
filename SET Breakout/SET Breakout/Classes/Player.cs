@@ -12,6 +12,7 @@ namespace SET_Breakout
     {
         public double SizeMultiplier { get; set; }
         public int score;
+        public int lives = 3;
 
         public Rectangle PaddleBounds
         {

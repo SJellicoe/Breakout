@@ -34,6 +34,8 @@ namespace SET_Breakout
         FrickinLaser laser1;
         FrickinLaser laser2;
         SpriteFont Font1;
+        Vector2 FontPos2;
+        Vector2 FontPos3;
         Vector2 FontPos;
 
         public Game1()
@@ -89,6 +91,8 @@ namespace SET_Breakout
 
            Font1 = Content.Load<SpriteFont>("Arial");
         FontPos = new Vector2(10,10);
+        FontPos2 = new Vector2(10, 30);
+        FontPos3 = new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2);
         // TODO: use this.Content to load your game content here
        player1.Texture = Content.Load<Texture2D>("Paddle");
 
@@ -162,6 +166,12 @@ namespace SET_Breakout
             ball.Move(ball.Velocity);
             laser1.Move(laser1.Velocity);
             laser2.Move(laser1.Velocity);
+
+            if (ball.alive == false)
+            {
+                player1.lives--;
+                ball.alive = true;
+            }
 
             if (ball.HitTop)
             {
@@ -279,32 +289,52 @@ namespace SET_Breakout
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
 
-            
-            player1.Draw(_spriteBatch);
-            foreach (Brick b in brick)
+            if (player1.lives > 0)
             {
-                if (b.alive == true)
+                player1.Draw(_spriteBatch);
+                foreach (Brick b in brick)
                 {
-                    b.Draw(_spriteBatch);
+                    if (b.alive == true)
+                    {
+                        b.Draw(_spriteBatch);
+                    }
                 }
+                //  player2.Draw(_spriteBatch);
+                ball.Draw(_spriteBatch);
+                if (laser1.alive == true)
+                {
+                    laser1.Draw(_spriteBatch);
+                }
+
+                if (laser2.alive == true)
+                {
+                    laser2.Draw(_spriteBatch);
+                }
+
+                _spriteBatch.DrawString(
+                Font1,                          // SpriteFont
+                "Score: " + player1.score.ToString(),  // Text
+                FontPos,                      // Position
+                Color.White);
+
+                _spriteBatch.DrawString(
+                Font1,                          // SpriteFont
+                "Lives: " + player1.lives.ToString(),  // Text
+                FontPos2,                      // Position
+                Color.White);
             }
-          //  player2.Draw(_spriteBatch);
-            ball.Draw(_spriteBatch);
-            if(laser1.alive == true)
+            else
             {
-                laser1.Draw(_spriteBatch);
+               _spriteBatch.DrawString(
+               Font1,                          // SpriteFont
+               "YOU LOSE",  // Text
+               FontPos3,                      // Position
+               Color.White);
             }
 
-            if (laser2.alive == true)
-            {
-                laser2.Draw(_spriteBatch);
-            }
 
-            _spriteBatch.DrawString(
-            Font1,                          // SpriteFont
-            "Score: " + player1.score.ToString(),  // Text
-            FontPos,                      // Position
-            Color.White); 
+
+           
 
             _spriteBatch.End();
             base.Draw(gameTime);

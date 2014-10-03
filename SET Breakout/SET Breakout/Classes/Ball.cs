@@ -13,6 +13,7 @@ namespace SET_Breakout
         public Random random;
         public bool HitTop { get; set; }
         public bool Triggered { get; set; }
+        public bool alive = true;
 
         public Ball()
         {
@@ -53,6 +54,8 @@ namespace SET_Breakout
                 Position = new Vector2(Game1.ScreenWidth / 2 - Texture.Width / 2, Game1.ScreenHeight / 2 - Texture.Height / 2);
                 Velocity.Y = 0;
                 Velocity.X = 0;
+                alive = false;
+                
             }
             if (Position.X < 0)
             {
