@@ -253,7 +253,7 @@ namespace SET_Breakout
 
             if (GameObject.CheckPaddleBallCollision(player1, ball2))
             {
-                ball2.Velocity.Y = -Math.Abs(ball.Velocity.Y);
+                ball2.Velocity.Y = -Math.Abs(ball2.Velocity.Y);
             }
 
 
@@ -265,15 +265,45 @@ namespace SET_Breakout
 
             if(GameObject.CheckPaddlePowerUpCollision(player1, multi))
             {
+                ball2.Velocity.X = 0.0f;
+                ball2.Velocity.Y = 0.0f;
                 ball2.Position = ball.Position;
                 ball2.Launch(BALL_START_SPEED);
                 player1.mutli = true;
+                ball2.alive = true;
+                multi.alive = false;
             }
 
             foreach (Brick b in brick)
             {
                 if (b.alive == true)
                 {
+                    if (GameObject.CheckPaddleBallCollision(b, ball2))
+                    {
+                        if (get_side(b) == 0)
+                        {
+                            ball2.Velocity.X *= -1;//Math.Abs(ball.Velocity.Y);
+                        }
+                        else
+                        {
+                            ball2.Velocity.Y *= -1;
+                        }
+
+                        b.alive = false;
+
+                        ball2.SpeedIncrease(b.row);
+
+                        ball2.Collided();
+
+                        player1.score += get_score(b);
+
+                        if (b.has_powerup == true)
+                        {
+                            b.power.alive = true;
+                            b.power.Launch(1.0f);
+                        }
+
+                    }
                     if (GameObject.CheckPaddleBallCollision(b, ball))
                     {
                         if (get_side(b) == 0)
