@@ -131,3 +131,6 @@ C:\Users\gmccoy\Desktop\Programming\Breakout_bak\Breakout\SET Breakout\SET Break
 C:\Users\gmccoy\Desktop\Programming\Breakout_bak\Breakout\SET Breakout\SET Breakout\bin\Windows\Debug\SharpDX.XInput.xml
 C:\Users\gmccoy\Desktop\Programming\Breakout_bak\Breakout\SET Breakout\SET Breakout\bin\Windows\Debug\SharpDX.RawInput.xml
 C:\Users\gmccoy\Desktop\Programming\Breakout_bak\Breakout\SET Breakout\SET Breakout\bin\Windows\Debug\SharpDX.Direct3D9.xml
+C:\Users\gmccoy\Desktop\Programming\Breakout_bak\Breakout\SET Breakout\SET Breakout\obj\x86\Debug\SET Breakout.csprojResolveAssemblyReference.cache
+C:\Users\gmccoy\Desktop\Programming\Breakout_bak\Breakout\SET Breakout\SET Breakout\bin\Windows\Debug\Content\powerUp.xnb
+C:\Users\gmccoy\Desktop\Programming\Breakout_bak\Breakout\SET Breakout\SET Breakout\bin\Windows\Debug\Content\Mutli.xnb

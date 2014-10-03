@@ -15,6 +15,7 @@ namespace SET_Breakout
         private bool hitMiddleRow = false;
         private bool hitTopRow = false;
         public bool Triggered { get; set; }
+        const float BALL_START_SPEED = 8f;
 
         public bool alive = true;
         private int collisions = 0;
@@ -59,7 +60,7 @@ namespace SET_Breakout
                 Velocity.Y = 0;
                 Velocity.X = 0;
                 alive = false;
-            
+                //Launch(BALL_START_SPEED);
                 HitTop = false;
                 hitTopRow = false;
                 hitMiddleRow = false;

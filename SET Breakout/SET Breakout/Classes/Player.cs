@@ -12,8 +12,9 @@ namespace SET_Breakout
     {
         public double SizeMultiplier { get; set; }
         public int score;
-        public int lives = 3;
-
+        public int lives = 300;
+        public bool lasers = false;
+        public bool mutli = false;
         public Rectangle PaddleBounds
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, (int)(Texture.Height * SizeMultiplier), Texture.Width); }
