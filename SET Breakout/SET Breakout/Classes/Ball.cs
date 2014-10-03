@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+
+namespace SET_Breakout
+{
+    public class Ball : GameObject
+    {
+        public Vector2 Velocity;
+        public Random random;
+        public bool HitTop { get; set; }
+        public bool Triggered { get; set; }
+
+        public Ball()
+        {
+            random = new Random();
+        }
+        public void Launch(float speed)
+        {
+            Position = new Vector2(Game1.ScreenWidth / 2 - Texture.Width / 2, Game1.ScreenHeight / 2 - Texture.Height / 2);
+            // get a random + or - 60 degrees angle to the right
+            float rotation = (float)(Math.PI / 2 + (random.NextDouble() * (Math.PI / 1.3f) - Math.PI / 3));
+
+            Velocity.X = (float)Math.Sin(rotation);
+            Velocity.Y = (float)Math.Cos(rotation);
+
+            // 50% chance whether it launches left or right
+            if (random.Next(2) == 1)
+            {
+                Velocity.X *= -1; //launch to the left
+            }
+
+            if (Velocity.Y < 0)
+            {
+                Velocity.Y *= -1;
+            }
+
+            Velocity *= speed;
+        }
+        public void CheckWallCollision()
+        {
+            if (Position.Y < 0)
+            {
+                Position.Y = 0;
+                Velocity.Y *= -1;
+                HitTop = true;
+            }
+            if (Position.Y + Texture.Height > Game1.ScreenHeight)
+            {
+                Position = new Vector2(Game1.ScreenWidth / 2 - Texture.Width / 2, Game1.ScreenHeight / 2 - Texture.Height / 2);
+                Velocity.Y = 0;
+                Velocity.X = 0;
+            }
+            if (Position.X < 0)
+            {
+                Position.X = 0;
+                Velocity.X *= -1;
+            }
+            if (Position.X + Texture.Width > Game1.ScreenWidth)
+            {
+                Position.X = Game1.ScreenWidth - Texture.Width;
+                Velocity.X *= -1;
+            }
+        }
+         public override void Move(Vector2 amount)
+         {
+             base.Move(amount);
+             CheckWallCollision();
+         }
+    }
+
+}
