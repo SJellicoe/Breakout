@@ -47,6 +47,15 @@ namespace SET_Breakout
                 return true;
             return false;
         }
+
+        public static bool CheckPaddlePowerUpCollision(Player player, powerup power)
+        {
+            if (player.PaddleBounds.Intersects(power.Bounds))
+                return true;
+            return false;
+        }
+
+
     }
     
 }

@@ -41,6 +41,7 @@
     <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Classes\Input.cs" />
     <Compile Include="Classes\Player.cs" />
+    <Compile Include="Classes\powerup.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,12 +76,18 @@
     <None Include="Content\Middle.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\Mutli.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\Paddle.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Content\PaddleBallCollision.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\powerUp.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\StartScreen.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

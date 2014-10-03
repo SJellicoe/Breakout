@@ -13,6 +13,8 @@ namespace SET_Breakout
     {
         public bool alive = true;
         public int row;
+        public bool has_powerup;
+        public powerup power;
 
         public override void Draw(SpriteBatch spriteBatch)
         {
