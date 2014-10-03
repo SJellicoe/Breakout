@@ -168,7 +168,6 @@ namespace SET_Breakout
                 if (!ball.Triggered)
                 {
                     player1.SizeMultiplier = 0.5;
-                    ball.Velocity *= (float)1.25;
                     ball.Triggered = true;
                 }
             }
@@ -222,6 +221,11 @@ namespace SET_Breakout
                         }
 
                         b.alive = false;
+
+                        ball.SpeedIncrease(b.row);
+
+                        ball.Collided();
+
                         player1.score += get_score(b);
                     }
 
