@@ -33,6 +33,7 @@ namespace SET_Breakout
         Ball ball;
         Brick[] brick;
         powerup lasers;
+        powerup extender;
         FrickinLaser laser1;
         FrickinLaser laser2;
         powerup multi;
@@ -85,9 +86,11 @@ namespace SET_Breakout
             laser2 = new FrickinLaser();
             lasers = new powerup();
             multi = new powerup();
+            extender = new powerup();
 
             lasers.power = "laser";
             multi.power = "multi";
+            extender.power = "extend";
 
             base.Initialize();
         }
@@ -122,6 +125,8 @@ namespace SET_Breakout
         int count = 0;
         int powerupbrick = random.Next(0, 66);
         int mutlibrick = random.Next(0, 66);
+        int extendbrick = random.Next(0, 66);
+
         foreach (Brick b in brick)
         {    
             if (brickposX > Game1.ScreenWidth)
@@ -143,6 +148,13 @@ namespace SET_Breakout
                 b.power = multi;
             }
 
+            if (count == mutlibrick)
+            {
+                extender.Position = new Vector2(brickposX, brickposY);
+                b.has_powerup = true;
+                b.power = extender;
+            }
+
              b.Position = new Vector2(brickposX, brickposY);
              b.row = row;
              brickposX += (10 + b.Texture.Width);
@@ -160,6 +172,7 @@ namespace SET_Breakout
         laser2.Texture = Content.Load<Texture2D>("laser");
         lasers.Texture = Content.Load<Texture2D>("powerUp");
          multi.Texture = Content.Load<Texture2D>("mutli");
+         extender.Texture = Content.Load<Texture2D>("extender");
 
         ball.Position = new Vector2(Game1.ScreenWidth / 2 - ball.Texture.Width / 2, Game1.ScreenHeight / 2 - ball.Texture.Height / 2);
         ball2.Position = new Vector2(Game1.ScreenWidth / 2 - ball.Texture.Width / 2, Game1.ScreenHeight / 2 - ball.Texture.Height / 2);
@@ -199,6 +212,7 @@ namespace SET_Breakout
             laser2.Move(laser1.Velocity);
             lasers.Move(lasers.Velocity);
             multi.Move(multi.Velocity);
+            extender.Move(extender.Velocity);
 
             if (ball.alive == false && ball2.alive == false)
             {
@@ -210,7 +224,7 @@ namespace SET_Breakout
             {
                 if (!ball.Triggered)
                 {
-                    player1.SizeMultiplier = 0.5;
+                    player1.SizeMultiplier = player1.SizeMultiplier / 2;
                     ball.Triggered = true;
                 }
             }
@@ -261,6 +275,14 @@ namespace SET_Breakout
             {
                 player1.lasers = true;
                 lasers.alive = false;
+            }
+
+            if (GameObject.CheckPaddlePowerUpCollision(player1, extender))
+            {
+                player1.SizeMultiplier = player1.SizeMultiplier * 2;
+                extender.alive = false;
+                extender.Position.X = 0;
+                extender.Position.Y = 0;
             }
 
             if(GameObject.CheckPaddlePowerUpCollision(player1, multi))
@@ -437,6 +459,11 @@ namespace SET_Breakout
                 if (multi.alive == true)
                 {
                     multi.Draw(_spriteBatch);
+                }
+
+                if (extender.alive == true)
+                {
+                    extender.Draw(_spriteBatch);
                 }
 
                 _spriteBatch.DrawString(
