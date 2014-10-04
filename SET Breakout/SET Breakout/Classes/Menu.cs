@@ -33,6 +33,7 @@ namespace SET_Breakout
         Form form = new Form();
         RadioButton r1 = new RadioButton();
         RadioButton r2 = new RadioButton();
+        TextBox txt1 = new TextBox();
 
         public override void Initialize()
         {
@@ -139,6 +140,18 @@ namespace SET_Breakout
             r2.Text = "Normal";
             r2.Location = new System.Drawing.Point(97, 33);
 
+            Label lbl = new Label();
+            lbl.Name = "lbl";
+            lbl.Text = "Victory Score";
+            lbl.Location = new System.Drawing.Point(5, 78);
+
+            
+            txt1.Name = "lbl";
+            txt1.Text = "";
+            txt1.Location = new System.Drawing.Point(5, 118);
+
+            form.Controls.Add(txt1);
+            form.Controls.Add(lbl);
             form.Controls.Add(r2);
             form.Controls.Add(r1);
             form.Controls.Add(button);
@@ -154,6 +167,15 @@ namespace SET_Breakout
             else if (r2.Checked)
             {
                 Game1.player1.SizeMultiplier = 1;
+            }
+
+            try
+            {
+                Game1.victory = Int32.Parse(txt1.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("YOU MUST ENTER A NUMBER");
             }
             form.Close();
         }
