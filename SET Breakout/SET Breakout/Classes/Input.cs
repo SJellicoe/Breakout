@@ -21,9 +21,9 @@ namespace SET_Breakout
 
             if (playerIndex == PlayerIndex.One)
             {
-                if (keyboardState.IsKeyDown(Keys.A))
+                if (keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Left))
                     direction.X += -1;
-                if (keyboardState.IsKeyDown(Keys.D))
+                if (keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.Right))
                     direction.X += 1;
             }
 

@@ -16,6 +16,7 @@ namespace SET_Breakout
         private bool hitTopRow = false;
         public bool Triggered { get; set; }
         const float BALL_START_SPEED = 8f;
+        private float speedMultiplier = BALL_START_SPEED;
 
         public bool alive = true;
         private int collisions = 0;
@@ -60,7 +61,7 @@ namespace SET_Breakout
                 Velocity.Y = 0;
                 Velocity.X = 0;
                 alive = false;
-                //Launch(BALL_START_SPEED);
+                speedMultiplier = BALL_START_SPEED;
                 HitTop = false;
                 hitTopRow = false;
                 hitMiddleRow = false;
@@ -112,6 +113,32 @@ namespace SET_Breakout
          {
              base.Move(amount);
              CheckWallCollision();
+         }
+
+         public void ReflectAngle(int paddleMiddle, int paddleWidth)
+         {
+             int ballMiddle = (int)(Position.X + Texture.Width / 2);
+             int offset = ballMiddle - paddleMiddle;
+             double percentage = Math.Abs((double)offset / ((double)paddleWidth / 2));
+             Velocity /= speedMultiplier;
+             if (Velocity.X < 0 && offset < 0)
+             {
+                 Velocity.X += Velocity.X * (float)percentage;
+             }
+             else if (Velocity.X < 0 && offset < 0)
+             {
+                 Velocity.X -= Velocity.X * (float)percentage;
+             }
+             else if (Velocity.X > 0 && offset < 0)
+             {
+                 Velocity.X -= Velocity.X * (float)percentage;
+             }
+             else if (Velocity.X > 0 && offset > 0)
+             {
+                 Velocity.X += Velocity.X * (float)percentage;
+             }
+
+             Velocity *= speedMultiplier;
          }
     }
 

@@ -30,7 +30,10 @@ namespace SET_Breakout
         public static bool CheckPaddleBallCollision(Player player, Ball ball)
         {
             if (player.PaddleBounds.Intersects(ball.Bounds))
+            {
+                ball.ReflectAngle((int)(player.Position.X + player.Texture.Height/2), (int)(player.Texture.Height*player.SizeMultiplier));
                 return true;
+            }
             return false;
         }
 
