@@ -17,6 +17,7 @@ namespace SET_Breakout
         public bool Triggered { get; set; }
         const float BALL_START_SPEED = 8f;
         private float speedMultiplier = BALL_START_SPEED;
+        private Vector2 ogVelocity;
 
         public bool alive = true;
         private int collisions = 0;
@@ -45,6 +46,7 @@ namespace SET_Breakout
                 Velocity.Y *= -1;
             }
 
+            ogVelocity = Velocity;
             Velocity *= speed;
         }
         public void CheckWallCollision()
@@ -138,7 +140,22 @@ namespace SET_Breakout
                  Velocity.X += Velocity.X * (float)percentage;
              }
 
+             if (Velocity.X < 0.2 && Velocity.X > -0.2)
+             {
+                 if (Velocity.X < 0)
+                 {
+                     Velocity.X = -0.2f;
+                 }
+                 else
+                 {
+                     Velocity.X = 0.2f;
+                 }
+             }
+
              Velocity *= speedMultiplier;
+
+             Velocity *= (float)(Math.Sqrt(Math.Pow(ogVelocity.X*speedMultiplier,2) + Math.Pow(ogVelocity.Y*speedMultiplier,2))/Math.Sqrt(Math.Pow(Velocity.X, 2) + Math.Pow(Velocity.Y, 2)));
+
          }
     }
 

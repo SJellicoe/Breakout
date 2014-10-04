@@ -127,9 +127,9 @@ namespace SET_Breakout
             int brickposY = 30;
             int row = 0;
             int count = 0;
-            int powerupbrick = random.Next(0, 66);
-            int mutlibrick = random.Next(0, 66);
-            int extendbrick = random.Next(0, 66);
+            int powerupbrick = random.Next(0, 60);
+            int mutlibrick = random.Next(0, 60);
+            int extendbrick = random.Next(0, 60);
 
             foreach (Brick b in brick)
             {
