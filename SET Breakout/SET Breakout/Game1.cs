@@ -288,8 +288,8 @@ namespace SET_Breakout
                 {
                     player1.SizeMultiplier = player1.SizeMultiplier * 2;
                     extender.alive = false;
-                    extender.Position.X = 0;
-                    extender.Position.Y = 0;
+                    extender.Position.X = -5000;
+                    extender.Position.Y = -5000;
                 }
 
                 if(GameObject.CheckPaddlePowerUpCollision(player1, multi))
