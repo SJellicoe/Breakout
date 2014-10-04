@@ -15,6 +15,7 @@ namespace SET_Breakout
         public int lives = 3;
         public bool lasers = false;
         public bool mutli = false;
+        public int wins = 0;
         public Rectangle PaddleBounds
         {
             get { return new Rectangle((int)Position.X, (int)Position.Y, (int)(Texture.Height * SizeMultiplier), Texture.Width); }

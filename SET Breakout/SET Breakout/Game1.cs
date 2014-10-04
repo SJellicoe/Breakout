@@ -514,11 +514,24 @@ namespace SET_Breakout
                 }
                 else
                 {
-                    _spriteBatch.DrawString(
-                   Font1,                          // SpriteFont
-                   "YOU WIN",  // Text
-                   FontPos3,                      // Position
-                   Color.White);
+                    if (player1.wins == 1)
+                    {
+                        _spriteBatch.DrawString(
+                       Font1,                          // SpriteFont
+                       "YOU WIN",  // Text
+                       FontPos3,                      // Position
+                       Color.White);
+                    }
+                    else
+                    {
+                        player1.wins++;
+                        foreach (Brick b in brick)
+                        {
+                            b.alive = true;
+                        }
+                    }
+
+                   
                 }
             }
             else
