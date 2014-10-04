@@ -12,7 +12,7 @@ namespace SET_Breakout
     {
         public double SizeMultiplier { get; set; }
         public int score;
-        public int lives = 300;
+        public int lives = 3;
         public bool lasers = false;
         public bool mutli = false;
         public Rectangle PaddleBounds
