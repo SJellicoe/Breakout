@@ -24,12 +24,13 @@ namespace SET_Breakout
         public static int ScreenWidth;
         public static int ScreenHeight;
         public static bool paused = false;
+        public static Player player1;
         public Random random;
         const int PADDLE_OFFSET = 30;
         const float BALL_START_SPEED = 8f;
         const float KEYBOARD_PADDLE_SPEED = 10f;
 
-        Player player1;
+        
         //Player player2;
         Ball ball;
         Brick[] brick;

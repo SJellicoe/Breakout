@@ -30,6 +30,9 @@ namespace SET_Breakout
         Form windowsGameForm;
         IGraphicsDeviceService graphicsService;
         GraphicsDevice graphics;
+        Form form = new Form();
+        RadioButton r1 = new RadioButton();
+        RadioButton r2 = new RadioButton();
 
         public override void Initialize()
         {
@@ -86,11 +89,9 @@ namespace SET_Breakout
 
             /**** Tools ***/
             item = new System.Windows.Forms.ToolStripMenuItem("Tools");
-
-            subitem = new System.Windows.Forms.ToolStripMenuItem("Difficultly");
-            subitem.Click += new EventHandler(OnDiffClick);
+            item.Click += new EventHandler(OnDiffClick);
            
-            item.DropDownItems.Add(subitem);
+          
        
 
             MainMenu.Items.Add(item);
@@ -119,7 +120,42 @@ namespace SET_Breakout
 
         public void OnDiffClick(object sender, EventArgs e)
         {
+            form = new Form();
+            form.Text = "Options";
+
+            Button button = new Button();
+            button.Name = "ApplyBtn";
+            button.Text = "Apply";
+            button.Location = new System.Drawing.Point(197, 227);
+            button.Click += new EventHandler(OnFormApplyClick);
+
             
+            r1.Name = "rBtn1";
+            r1.Text = "Hard";
+            r1.Location = new System.Drawing.Point(97, 13);
+
+           
+            r1.Name = "rBtn2";
+            r2.Text = "Normal";
+            r2.Location = new System.Drawing.Point(97, 33);
+
+            form.Controls.Add(r2);
+            form.Controls.Add(r1);
+            form.Controls.Add(button);
+
+            form.ShowDialog();
+        }
+        public void OnFormApplyClick(object sender, EventArgs e)
+        {
+            if (r1.Checked)
+            {
+                Game1.player1.SizeMultiplier = .5;
+            }
+            else if (r2.Checked)
+            {
+                Game1.player1.SizeMultiplier = 1;
+            }
+            form.Close();
         }
 
         public void OnAboutClick(object sender, EventArgs e)
