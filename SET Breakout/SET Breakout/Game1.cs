@@ -24,12 +24,14 @@ namespace SET_Breakout
         public static int ScreenWidth;
         public static int ScreenHeight;
         public static bool paused = false;
+        public static Player player1;
+        public static int victory;
         public Random random;
         const int PADDLE_OFFSET = 30;
         const float BALL_START_SPEED = 8f;
         const float KEYBOARD_PADDLE_SPEED = 10f;
 
-        Player player1;
+        
         //Player player2;
         Ball ball;
         Brick[] brick;
@@ -95,6 +97,8 @@ namespace SET_Breakout
             multi.power = "multi";
             extender.power = "extend";
 
+            victory = 0;
+
             base.Initialize();
         }
 
@@ -152,7 +156,7 @@ namespace SET_Breakout
                     b.power = multi;
                 }
 
-                if (count == mutlibrick)
+                if (count == extendbrick)
                 {
                     extender.Position = new Vector2(brickposX, brickposY);
                     b.has_powerup = true;
@@ -287,8 +291,8 @@ namespace SET_Breakout
                 {
                     player1.SizeMultiplier = player1.SizeMultiplier * 2;
                     extender.alive = false;
-                    extender.Position.X = 0;
-                    extender.Position.Y = 0;
+                    extender.Position.X = -5000;
+                    extender.Position.Y = -5000;
                 }
 
                 if (GameObject.CheckPaddlePowerUpCollision(player1, multi))
@@ -430,15 +434,29 @@ namespace SET_Breakout
             if (player1.lives > 0)
             {
                 player1.Draw(_spriteBatch);
-                foreach (Brick b in brick)
+
+               
+               foreach (Brick b in brick)
+               {
+                   if (b.alive == true)
+                   {
+                       if (victory == 0)
+                       {
+                           if (cleared)
+                           {
+                               cleared = false;
+                           }
+                       }
+                       b.Draw(_spriteBatch);
+                   }
+                }
+                
+                if(victory != 0)
                 {
-                    if (b.alive == true)
+                    cleared = false;
+                    if (player1.score >= victory)
                     {
-                        if (cleared)
-                        {
-                            cleared = false;
-                        }
-                        b.Draw(_spriteBatch);
+                        cleared = true;
                     }
                 }
 
