@@ -134,3 +134,4 @@ C:\Users\gmccoy\Desktop\Programming\Breakout_bak\Breakout\SET Breakout\SET Break
 C:\Users\gmccoy\Desktop\Programming\Breakout_bak\Breakout\SET Breakout\SET Breakout\bin\Windows\Debug\SharpDX.Direct3D9.xml
 C:\Users\gmccoy\Desktop\Programming\Breakout_bak\Breakout\SET Breakout\SET Breakout\obj\x86\Debug\SET Breakout.exe
 C:\Users\gmccoy\Desktop\Programming\Breakout_bak\Breakout\SET Breakout\SET Breakout\obj\x86\Debug\SET Breakout.pdb
+C:\Users\gmccoy\Desktop\Programming\Breakout_bak\Breakout\SET Breakout\SET Breakout\obj\x86\Debug\SET Breakout.csprojResolveAssemblyReference.cache

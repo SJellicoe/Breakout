@@ -1,0 +1,1 @@
+c:\users\gmccoy\documents\visual studio 2012\Projects\XNADialog\XNADialog\bin\Debug\XNADialog.exe.config
