@@ -48,10 +48,10 @@ namespace SET_Breakout
         public Game1()
             : base()
         {
-           _graphics = new GraphicsDeviceManager(this);
-           _graphics.IsFullScreen = false;
-           _graphics.PreferredBackBufferHeight = 800;
-           _graphics.PreferredBackBufferWidth = 1170;
+            _graphics = new GraphicsDeviceManager(this);
+            _graphics.IsFullScreen = false;
+            _graphics.PreferredBackBufferHeight = 800;
+            _graphics.PreferredBackBufferWidth = 1170;
             Content.RootDirectory = "Content";
             random = new Random();
         }
@@ -72,8 +72,8 @@ namespace SET_Breakout
             menu.Initialize();
             player1 = new Player();
             player1.score = 0;
-            brick = new Brick[66];
-            
+            brick = new Brick[60];
+
             int count = 0;
 
             foreach (Brick b in brick)
@@ -104,89 +104,89 @@ namespace SET_Breakout
         /// </summary>
         protected override void LoadContent()
         {
-            
-                // Create a new SpriteBatch, which can be used to draw textures.
-                _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-           Font1 = Content.Load<SpriteFont>("Arial");
-        FontPos = new Vector2(10,30);
-        FontPos2 = new Vector2(10, 50);
-        FontPos3 = new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2);
-        // TODO: use this.Content to load your game content here
-       player1.Texture = Content.Load<Texture2D>("Paddle");
+            // Create a new SpriteBatch, which can be used to draw textures.
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-       foreach (Brick b in brick)
-       {
-           b.Texture = Content.Load<Texture2D>("Brick");
-       }
-     //  player2.Texture = Content.Load<Texture2D>("Paddle");
- 
-        player1.Position = new Vector2(PADDLE_OFFSET, ScreenHeight / 2 + 370);
+            Font1 = Content.Load<SpriteFont>("Arial");
+            FontPos = new Vector2(10, 30);
+            FontPos2 = new Vector2(10, 50);
+            FontPos3 = new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2);
+            // TODO: use this.Content to load your game content here
+            player1.Texture = Content.Load<Texture2D>("Paddle");
 
-        int brickposX = 10;
-        int brickposY = 30;
-        int row = 0;
-        int count = 0;
-        int powerupbrick = random.Next(0, 66);
-        int mutlibrick = random.Next(0, 66);
-        int extendbrick = random.Next(0, 66);
-
-        foreach (Brick b in brick)
-        {    
-            if (brickposX > Game1.ScreenWidth)
+            foreach (Brick b in brick)
             {
-                brickposX = 10;
-                brickposY += (10 + b.Texture.Height);
-                row++;
+                b.Texture = Content.Load<Texture2D>("Brick");
             }
-            if (count == powerupbrick)
+            //  player2.Texture = Content.Load<Texture2D>("Paddle");
+
+            player1.Position = new Vector2(PADDLE_OFFSET, ScreenHeight / 2 + 370);
+
+            int brickposX = 10;
+            int brickposY = 30;
+            int row = 0;
+            int count = 0;
+            int powerupbrick = random.Next(0, 66);
+            int mutlibrick = random.Next(0, 66);
+            int extendbrick = random.Next(0, 66);
+
+            foreach (Brick b in brick)
             {
-                lasers.Position = new Vector2(brickposX, brickposY);
-                b.has_powerup = true;
-                b.power = lasers; 
-            }
-            if (count == mutlibrick)
-            {
-                multi.Position = new Vector2(brickposX, brickposY);
-                b.has_powerup = true;
-                b.power = multi;
+                if (brickposX + b.Texture.Width > Game1.ScreenWidth)
+                {
+                    brickposX = 10;
+                    brickposY += (10 + b.Texture.Height);
+                    row++;
+                }
+                if (count == powerupbrick)
+                {
+                    lasers.Position = new Vector2(brickposX, brickposY);
+                    b.has_powerup = true;
+                    b.power = lasers;
+                }
+                if (count == mutlibrick)
+                {
+                    multi.Position = new Vector2(brickposX, brickposY);
+                    b.has_powerup = true;
+                    b.power = multi;
+                }
+
+                if (count == mutlibrick)
+                {
+                    extender.Position = new Vector2(brickposX, brickposY);
+                    b.has_powerup = true;
+                    b.power = extender;
+                }
+
+                b.Position = new Vector2(brickposX, brickposY);
+                b.row = row;
+                brickposX += (10 + b.Texture.Width);
+                count++;
+
             }
 
-            if (count == mutlibrick)
-            {
-                extender.Position = new Vector2(brickposX, brickposY);
-                b.has_powerup = true;
-                b.power = extender;
-            }
 
-             b.Position = new Vector2(brickposX, brickposY);
-             b.row = row;
-             brickposX += (10 + b.Texture.Width);
-             count++;
-            
+            //  player2.Position = new Vector2(ScreenWidth - player2.Texture.Width - PADDLE_OFFSET, ScreenHeight / 2 - player2.Texture.Height / 2);
+
+
+            ball.Texture = Content.Load<Texture2D>("Ball");
+            ball2.Texture = Content.Load<Texture2D>("Ball");
+            laser1.Texture = Content.Load<Texture2D>("laser");
+            laser2.Texture = Content.Load<Texture2D>("laser");
+            lasers.Texture = Content.Load<Texture2D>("powerUp");
+            multi.Texture = Content.Load<Texture2D>("mutli");
+            extender.Texture = Content.Load<Texture2D>("extender");
+
+            ball.Position = new Vector2(Game1.ScreenWidth / 2 - ball.Texture.Width / 2, Game1.ScreenHeight / 2 - ball.Texture.Height / 2);
+            ball2.Position = new Vector2(Game1.ScreenWidth / 2 - ball.Texture.Width / 2, Game1.ScreenHeight / 2 - ball.Texture.Height / 2);
+            if (laser1.alive == false && laser2.alive == false)
+            {
+                laser1.Position = new Vector2(player1.Position.X, player1.Position.Y - laser1.Texture.Height);
+                laser2.Position = new Vector2(player1.Position.X + (int)(player1.Texture.Height * player1.SizeMultiplier) - laser2.Texture.Width, player1.Position.Y - laser2.Texture.Height);
+            }
         }
 
-    
-      //  player2.Position = new Vector2(ScreenWidth - player2.Texture.Width - PADDLE_OFFSET, ScreenHeight / 2 - player2.Texture.Height / 2);
-
- 
-        ball.Texture = Content.Load<Texture2D>("Ball");
-        ball2.Texture = Content.Load<Texture2D>("Ball");
-        laser1.Texture = Content.Load<Texture2D>("laser");
-        laser2.Texture = Content.Load<Texture2D>("laser");
-        lasers.Texture = Content.Load<Texture2D>("powerUp");
-         multi.Texture = Content.Load<Texture2D>("mutli");
-         extender.Texture = Content.Load<Texture2D>("extender");
-
-        ball.Position = new Vector2(Game1.ScreenWidth / 2 - ball.Texture.Width / 2, Game1.ScreenHeight / 2 - ball.Texture.Height / 2);
-        ball2.Position = new Vector2(Game1.ScreenWidth / 2 - ball.Texture.Width / 2, Game1.ScreenHeight / 2 - ball.Texture.Height / 2);
-        if (laser1.alive == false && laser2.alive == false)
-        {
-            laser1.Position = new Vector2(player1.Position.X, player1.Position.Y - laser1.Texture.Height);
-            laser2.Position = new Vector2(player1.Position.X + (int)(player1.Texture.Height * player1.SizeMultiplier) - laser2.Texture.Width, player1.Position.Y - laser2.Texture.Height);
-        }
-}
-         
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -203,9 +203,9 @@ namespace SET_Breakout
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
+        {
+            if (!paused)
             {
-               if(!paused)
-               {
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))// GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
                     Exit();
 
@@ -237,7 +237,7 @@ namespace SET_Breakout
 
                 KeyboardState keyboardState = Keyboard.GetState();
                 Vector2 player1Velocity = Input.GetKeyboardInputDirection(PlayerIndex.One) * KEYBOARD_PADDLE_SPEED;
-              //  Vector2 player2Velocity = Input.GetKeyboardInputDirection(PlayerIndex.Two) * KEYBOARD_PADDLE_SPEED;
+                //  Vector2 player2Velocity = Input.GetKeyboardInputDirection(PlayerIndex.Two) * KEYBOARD_PADDLE_SPEED;
 
                 player1.Move(player1Velocity);
                 if (laser1.alive == false && laser2.alive == false)
@@ -245,9 +245,9 @@ namespace SET_Breakout
                     laser1.Position = new Vector2(player1.Position.X, player1.Position.Y - laser1.Texture.Height);
                     laser2.Position = new Vector2(player1.Position.X + (int)(player1.Texture.Height * player1.SizeMultiplier) - laser2.Texture.Width, player1.Position.Y - laser2.Texture.Height);
                 }
-            
-              //  player2.Move(player2Velocity);
-            
+
+                //  player2.Move(player2Velocity);
+
                 if (keyboardState.IsKeyDown(Keys.Space))
                 {
                     ball.Launch(BALL_START_SPEED);
@@ -256,7 +256,7 @@ namespace SET_Breakout
 
                 if (keyboardState.IsKeyDown(Keys.F))
                 {
-                    if (laser1.alive == false && laser2.alive == false  && player1.lasers == true)
+                    if (laser1.alive == false && laser2.alive == false && player1.lasers == true)
                     {
                         laser1.alive = true;
                         laser2.alive = true;
@@ -267,7 +267,7 @@ namespace SET_Breakout
 
                 if (GameObject.CheckPaddleBallCollision(player1, ball))
                 {
-                    ball.Velocity.Y = -Math.Abs(ball.Velocity.Y);        
+                    ball.Velocity.Y = -Math.Abs(ball.Velocity.Y);
                 }
 
 
@@ -291,7 +291,7 @@ namespace SET_Breakout
                     extender.Position.Y = 0;
                 }
 
-                if(GameObject.CheckPaddlePowerUpCollision(player1, multi))
+                if (GameObject.CheckPaddlePowerUpCollision(player1, multi))
                 {
                     ball2.Velocity.X = 0.0f;
                     ball2.Velocity.Y = 0.0f;
@@ -390,28 +390,28 @@ namespace SET_Breakout
                         }
                     }
                 }
- 
-              /*  if (GameObject.CheckPaddleBallCollision(player2, ball))
-                {
-                    ball.Velocity.X = -Math.Abs(ball.Velocity.X);
-                }*/
- 
+
+                /*  if (GameObject.CheckPaddleBallCollision(player2, ball))
+                  {
+                      ball.Velocity.X = -Math.Abs(ball.Velocity.X);
+                  }*/
+
                 if (ball.Position.X + ball.Texture.Width < 0)
                 {
                     ball.Launch(BALL_START_SPEED);
                 }
 
                 if (ball.Position.X + ball.Texture.Width < 0)
-                    {
-                        ball.Launch(BALL_START_SPEED);
-                    }
- 
-                    if (ball.Position.X > ScreenWidth)
-                    {
-                        ball.Launch(BALL_START_SPEED);
-                    }
-                    base.Update(gameTime);
-               }
+                {
+                    ball.Launch(BALL_START_SPEED);
+                }
+
+                if (ball.Position.X > ScreenWidth)
+                {
+                    ball.Launch(BALL_START_SPEED);
+                }
+                base.Update(gameTime);
+            }
 
         }
 
@@ -421,6 +421,7 @@ namespace SET_Breakout
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            bool cleared = true;
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
@@ -433,71 +434,87 @@ namespace SET_Breakout
                 {
                     if (b.alive == true)
                     {
+                        if (cleared)
+                        {
+                            cleared = false;
+                        }
                         b.Draw(_spriteBatch);
                     }
                 }
-                //  player2.Draw(_spriteBatch);
 
-                if (ball.alive == false && ball2.alive == false || ball.alive == true)
+                if (!cleared)
                 {
-                    ball.Draw(_spriteBatch);
-                }
-                
+                    //  player2.Draw(_spriteBatch);
 
-                if (ball2.alive == true)
+                    if (ball.alive == false && ball2.alive == false || ball.alive == true)
+                    {
+                        ball.Draw(_spriteBatch);
+                    }
+
+
+                    if (ball2.alive == true)
+                    {
+                        ball2.Draw(_spriteBatch);
+                    }
+
+                    if (laser1.alive == true)
+                    {
+                        laser1.Draw(_spriteBatch);
+                    }
+
+                    if (laser2.alive == true)
+                    {
+                        laser2.Draw(_spriteBatch);
+                    }
+
+                    if (lasers.alive == true)
+                    {
+                        lasers.Draw(_spriteBatch);
+                    }
+
+                    if (multi.alive == true)
+                    {
+                        multi.Draw(_spriteBatch);
+                    }
+
+                    if (extender.alive == true)
+                    {
+                        extender.Draw(_spriteBatch);
+                    }
+
+                    _spriteBatch.DrawString(
+                    Font1,                          // SpriteFont
+                    "Score: " + player1.score.ToString(),  // Text
+                    FontPos,                      // Position
+                    Color.White);
+
+                    _spriteBatch.DrawString(
+                    Font1,                          // SpriteFont
+                    "Lives: " + player1.lives.ToString(),  // Text
+                    FontPos2,                      // Position
+                    Color.White);
+                }
+                else
                 {
-                    ball2.Draw(_spriteBatch);
+                    _spriteBatch.DrawString(
+                   Font1,                          // SpriteFont
+                   "YOU WIN",  // Text
+                   FontPos3,                      // Position
+                   Color.White);
                 }
-
-                if (laser1.alive == true)
-                {
-                    laser1.Draw(_spriteBatch);
-                }
-
-                if (laser2.alive == true)
-                {
-                    laser2.Draw(_spriteBatch);
-                }
-
-                if (lasers.alive == true)
-                {
-                    lasers.Draw(_spriteBatch);
-                }
-
-                if (multi.alive == true)
-                {
-                    multi.Draw(_spriteBatch);
-                }
-
-                if (extender.alive == true)
-                {
-                    extender.Draw(_spriteBatch);
-                }
-
-                _spriteBatch.DrawString(
-                Font1,                          // SpriteFont
-                "Score: " + player1.score.ToString(),  // Text
-                FontPos,                      // Position
-                Color.White);
-
-                _spriteBatch.DrawString(
-                Font1,                          // SpriteFont
-                "Lives: " + player1.lives.ToString(),  // Text
-                FontPos2,                      // Position
-                Color.White);
             }
             else
             {
-               _spriteBatch.DrawString(
-               Font1,                          // SpriteFont
-               "YOU LOSE",  // Text
-               FontPos3,                      // Position
-               Color.White);
+                _spriteBatch.DrawString(
+                Font1,                          // SpriteFont
+                "YOU LOSE",  // Text
+                FontPos3,                      // Position
+                Color.White);
             }
 
 
 
-           
+
 
             _spriteBatch.End();
             base.Draw(gameTime);
@@ -543,7 +560,7 @@ namespace SET_Breakout
             {
                 return 1;
             }
-     
+
         }
 
         public int get_score(Brick b)
