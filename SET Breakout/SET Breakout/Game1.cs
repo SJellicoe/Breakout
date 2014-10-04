@@ -23,6 +23,7 @@ namespace SET_Breakout
 
         public static int ScreenWidth;
         public static int ScreenHeight;
+        public static bool paused = false;
         public Random random;
         const int PADDLE_OFFSET = 30;
         const float BALL_START_SPEED = 8f;
@@ -42,6 +43,7 @@ namespace SET_Breakout
         Vector2 FontPos3;
         Vector2 FontPos;
         Ball ball2;
+        EditorControls menu;
 
         public Game1()
             : base()
@@ -65,8 +67,9 @@ namespace SET_Breakout
             // TODO: Add your initialization logic here
             ScreenWidth = GraphicsDevice.Viewport.Width;
             ScreenHeight = GraphicsDevice.Viewport.Height;
-           
 
+            menu = new EditorControls(this);
+            menu.Initialize();
             player1 = new Player();
             player1.score = 0;
             brick = new Brick[66];
@@ -101,12 +104,13 @@ namespace SET_Breakout
         /// </summary>
         protected override void LoadContent()
         {
+            
                 // Create a new SpriteBatch, which can be used to draw textures.
                 _spriteBatch = new SpriteBatch(GraphicsDevice);
 
            Font1 = Content.Load<SpriteFont>("Arial");
-        FontPos = new Vector2(10,10);
-        FontPos2 = new Vector2(10, 30);
+        FontPos = new Vector2(10,30);
+        FontPos2 = new Vector2(10, 50);
         FontPos3 = new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2);
         // TODO: use this.Content to load your game content here
        player1.Texture = Content.Load<Texture2D>("Paddle");
@@ -120,7 +124,7 @@ namespace SET_Breakout
         player1.Position = new Vector2(PADDLE_OFFSET, ScreenHeight / 2 + 370);
 
         int brickposX = 10;
-        int brickposY = 10;
+        int brickposY = 30;
         int row = 0;
         int count = 0;
         int powerupbrick = random.Next(0, 66);
@@ -199,165 +203,152 @@ namespace SET_Breakout
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))// GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
-                Exit();
-
-            // TODO: Add your update logic here
-            ScreenWidth = GraphicsDevice.Viewport.Width;
-            ScreenHeight = GraphicsDevice.Viewport.Height;
-            ball.Move(ball.Velocity);
-            ball2.Move(ball2.Velocity);
-            laser1.Move(laser1.Velocity);
-            laser2.Move(laser1.Velocity);
-            lasers.Move(lasers.Velocity);
-            multi.Move(multi.Velocity);
-            extender.Move(extender.Velocity);
-
-            if (ball.alive == false && ball2.alive == false)
             {
-                player1.lives--;
-                ball.alive = true;
-            }
+               if(!paused)
+               {
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))// GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
+                    Exit();
 
-            if (ball.HitTop)
-            {
-                if (!ball.Triggered)
+                // TODO: Add your update logic here
+                ScreenWidth = GraphicsDevice.Viewport.Width;
+                ScreenHeight = GraphicsDevice.Viewport.Height;
+                ball.Move(ball.Velocity);
+                ball2.Move(ball2.Velocity);
+                laser1.Move(laser1.Velocity);
+                laser2.Move(laser1.Velocity);
+                lasers.Move(lasers.Velocity);
+                multi.Move(multi.Velocity);
+                extender.Move(extender.Velocity);
+
+                if (ball.alive == false && ball2.alive == false)
                 {
-                    player1.SizeMultiplier = player1.SizeMultiplier / 2;
-                    ball.Triggered = true;
+                    player1.lives--;
+                    ball.alive = true;
                 }
-            }
 
-            KeyboardState keyboardState = Keyboard.GetState();
-            Vector2 player1Velocity = Input.GetKeyboardInputDirection(PlayerIndex.One) * KEYBOARD_PADDLE_SPEED;
-          //  Vector2 player2Velocity = Input.GetKeyboardInputDirection(PlayerIndex.Two) * KEYBOARD_PADDLE_SPEED;
-
-            player1.Move(player1Velocity);
-            if (laser1.alive == false && laser2.alive == false)
-            {
-                laser1.Position = new Vector2(player1.Position.X, player1.Position.Y - laser1.Texture.Height);
-                laser2.Position = new Vector2(player1.Position.X + (int)(player1.Texture.Height * player1.SizeMultiplier) - laser2.Texture.Width, player1.Position.Y - laser2.Texture.Height);
-            }
-            
-          //  player2.Move(player2Velocity);
-            
-            if (keyboardState.IsKeyDown(Keys.Space))
-            {
-                ball.Launch(BALL_START_SPEED);
-                ball.alive = true;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.F))
-            {
-                if (laser1.alive == false && laser2.alive == false  && player1.lasers == true)
+                if (ball.HitTop)
                 {
-                    laser1.alive = true;
-                    laser2.alive = true;
-                    laser1.Launch(BALL_START_SPEED);
-                    laser2.Launch(BALL_START_SPEED);
+                    if (!ball.Triggered)
+                    {
+                        player1.SizeMultiplier = player1.SizeMultiplier / 2;
+                        ball.Triggered = true;
+                    }
                 }
-            }
 
-            if (GameObject.CheckPaddleBallCollision(player1, ball))
-            {
-                ball.Velocity.Y = -Math.Abs(ball.Velocity.Y);        
-            }
+                KeyboardState keyboardState = Keyboard.GetState();
+                Vector2 player1Velocity = Input.GetKeyboardInputDirection(PlayerIndex.One) * KEYBOARD_PADDLE_SPEED;
+              //  Vector2 player2Velocity = Input.GetKeyboardInputDirection(PlayerIndex.Two) * KEYBOARD_PADDLE_SPEED;
 
-
-            if (GameObject.CheckPaddleBallCollision(player1, ball2))
-            {
-                ball2.Velocity.Y = -Math.Abs(ball2.Velocity.Y);
-            }
-
-
-            if (GameObject.CheckPaddlePowerUpCollision(player1, lasers))
-            {
-                player1.lasers = true;
-                lasers.alive = false;
-            }
-
-            if (GameObject.CheckPaddlePowerUpCollision(player1, extender))
-            {
-                player1.SizeMultiplier = player1.SizeMultiplier * 2;
-                extender.alive = false;
-                extender.Position.X = 0;
-                extender.Position.Y = 0;
-            }
-
-            if(GameObject.CheckPaddlePowerUpCollision(player1, multi))
-            {
-                ball2.Velocity.X = 0.0f;
-                ball2.Velocity.Y = 0.0f;
-                ball2.Position = ball.Position;
-                ball2.Launch(BALL_START_SPEED);
-                player1.mutli = true;
-                ball2.alive = true;
-                multi.alive = false;
-            }
-
-            foreach (Brick b in brick)
-            {
-                if (b.alive == true)
+                player1.Move(player1Velocity);
+                if (laser1.alive == false && laser2.alive == false)
                 {
-                    if (GameObject.CheckPaddleBallCollision(b, ball2))
+                    laser1.Position = new Vector2(player1.Position.X, player1.Position.Y - laser1.Texture.Height);
+                    laser2.Position = new Vector2(player1.Position.X + (int)(player1.Texture.Height * player1.SizeMultiplier) - laser2.Texture.Width, player1.Position.Y - laser2.Texture.Height);
+                }
+            
+              //  player2.Move(player2Velocity);
+            
+                if (keyboardState.IsKeyDown(Keys.Space))
+                {
+                    ball.Launch(BALL_START_SPEED);
+                    ball.alive = true;
+                }
+
+                if (keyboardState.IsKeyDown(Keys.F))
+                {
+                    if (laser1.alive == false && laser2.alive == false  && player1.lasers == true)
                     {
-                        if (get_side(b) == 0)
-                        {
-                            ball2.Velocity.X *= -1;//Math.Abs(ball.Velocity.Y);
-                        }
-                        else
-                        {
-                            ball2.Velocity.Y *= -1;
-                        }
-
-                        b.alive = false;
-
-                        ball2.SpeedIncrease(b.row);
-
-                        ball2.Collided();
-
-                        player1.score += get_score(b);
-
-                        if (b.has_powerup == true)
-                        {
-                            b.power.alive = true;
-                            b.power.Launch(1.0f);
-                        }
-
+                        laser1.alive = true;
+                        laser2.alive = true;
+                        laser1.Launch(BALL_START_SPEED);
+                        laser2.Launch(BALL_START_SPEED);
                     }
-                    if (GameObject.CheckPaddleBallCollision(b, ball))
+                }
+
+                if (GameObject.CheckPaddleBallCollision(player1, ball))
+                {
+                    ball.Velocity.Y = -Math.Abs(ball.Velocity.Y);        
+                }
+
+
+                if (GameObject.CheckPaddleBallCollision(player1, ball2))
+                {
+                    ball2.Velocity.Y = -Math.Abs(ball2.Velocity.Y);
+                }
+
+
+                if (GameObject.CheckPaddlePowerUpCollision(player1, lasers))
+                {
+                    player1.lasers = true;
+                    lasers.alive = false;
+                }
+
+                if (GameObject.CheckPaddlePowerUpCollision(player1, extender))
+                {
+                    player1.SizeMultiplier = player1.SizeMultiplier * 2;
+                    extender.alive = false;
+                    extender.Position.X = 0;
+                    extender.Position.Y = 0;
+                }
+
+                if(GameObject.CheckPaddlePowerUpCollision(player1, multi))
+                {
+                    ball2.Velocity.X = 0.0f;
+                    ball2.Velocity.Y = 0.0f;
+                    ball2.Position = ball.Position;
+                    ball2.Launch(BALL_START_SPEED);
+                    player1.mutli = true;
+                    ball2.alive = true;
+                    multi.alive = false;
+                }
+
+                foreach (Brick b in brick)
+                {
+                    if (b.alive == true)
                     {
-                        if (get_side(b) == 0)
+                        if (GameObject.CheckPaddleBallCollision(b, ball2))
                         {
-                            ball.Velocity.X *= -1;//Math.Abs(ball.Velocity.Y);
-                        }
-                        else
-                        {
-                            ball.Velocity.Y *= -1;
-                        }
+                            if (get_side(b) == 0)
+                            {
+                                ball2.Velocity.X *= -1;//Math.Abs(ball.Velocity.Y);
+                            }
+                            else
+                            {
+                                ball2.Velocity.Y *= -1;
+                            }
 
-                        b.alive = false;
-
-                        ball.SpeedIncrease(b.row);
-
-                        ball.Collided();
-
-                        player1.score += get_score(b);
-
-                        if (b.has_powerup == true)
-                        {
-                            b.power.alive = true;
-                            b.power.Launch(1.0f);
-                        }
-                    }
-
-                    if (laser1.alive == true)
-                    {
-                        if (GameObject.CheckPaddleLaserCollision(b, laser1))
-                        {
                             b.alive = false;
-                            laser1.alive = false;
+
+                            ball2.SpeedIncrease(b.row);
+
+                            ball2.Collided();
+
+                            player1.score += get_score(b);
+
+                            if (b.has_powerup == true)
+                            {
+                                b.power.alive = true;
+                                b.power.Launch(1.0f);
+                            }
+
+                        }
+                        if (GameObject.CheckPaddleBallCollision(b, ball))
+                        {
+                            if (get_side(b) == 0)
+                            {
+                                ball.Velocity.X *= -1;//Math.Abs(ball.Velocity.Y);
+                            }
+                            else
+                            {
+                                ball.Velocity.Y *= -1;
+                            }
+
+                            b.alive = false;
+
+                            ball.SpeedIncrease(b.row);
+
+                            ball.Collided();
+
                             player1.score += get_score(b);
 
                             if (b.has_powerup == true)
@@ -366,45 +357,62 @@ namespace SET_Breakout
                                 b.power.Launch(1.0f);
                             }
                         }
-                    }
-                    if (laser2.alive == true)
-                    {
-                        if (GameObject.CheckPaddleLaserCollision(b, laser2))
-                        {
-                            b.alive = false;
-                            laser2.alive = false;
-                            player1.score += get_score(b);
 
-                            if (b.has_powerup == true)
+                        if (laser1.alive == true)
+                        {
+                            if (GameObject.CheckPaddleLaserCollision(b, laser1))
                             {
-                                b.power.alive = true;
-                                b.power.Launch(1.0f);
+                                b.alive = false;
+                                laser1.alive = false;
+                                player1.score += get_score(b);
+
+                                if (b.has_powerup == true)
+                                {
+                                    b.power.alive = true;
+                                    b.power.Launch(1.0f);
+                                }
+                            }
+                        }
+                        if (laser2.alive == true)
+                        {
+                            if (GameObject.CheckPaddleLaserCollision(b, laser2))
+                            {
+                                b.alive = false;
+                                laser2.alive = false;
+                                player1.score += get_score(b);
+
+                                if (b.has_powerup == true)
+                                {
+                                    b.power.alive = true;
+                                    b.power.Launch(1.0f);
+                                }
                             }
                         }
                     }
                 }
-            }
  
-          /*  if (GameObject.CheckPaddleBallCollision(player2, ball))
-            {
-                ball.Velocity.X = -Math.Abs(ball.Velocity.X);
-            }*/
+              /*  if (GameObject.CheckPaddleBallCollision(player2, ball))
+                {
+                    ball.Velocity.X = -Math.Abs(ball.Velocity.X);
+                }*/
  
-            if (ball.Position.X + ball.Texture.Width < 0)
-            {
-                ball.Launch(BALL_START_SPEED);
-            }
+                if (ball.Position.X + ball.Texture.Width < 0)
+                {
+                    ball.Launch(BALL_START_SPEED);
+                }
 
-            if (ball.Position.X + ball.Texture.Width < 0)
-                {
-                    ball.Launch(BALL_START_SPEED);
-                }
+                if (ball.Position.X + ball.Texture.Width < 0)
+                    {
+                        ball.Launch(BALL_START_SPEED);
+                    }
  
-                if (ball.Position.X > ScreenWidth)
-                {
-                    ball.Launch(BALL_START_SPEED);
-                }
-            base.Update(gameTime);
+                    if (ball.Position.X > ScreenWidth)
+                    {
+                        ball.Launch(BALL_START_SPEED);
+                    }
+                    base.Update(gameTime);
+               }
+
         }
 
         /// <summary>
